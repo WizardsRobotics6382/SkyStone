@@ -36,14 +36,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.external.tfod.TfodSkyStone;
 
 import java.util.List;
 
@@ -54,7 +52,7 @@ public class Autonomous_Insentive extends LinearOpMode {
 
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
-    private static final String LABEL_SECOND_ELEMENT = "Skystone";
+    private static final String LABEL_SECOND_ELEMENT = "Count";
 
     private static final String VUFORIA_KEY =
             "Ade+9uD/////AAABma6ja62RQUgPiQ0Q5nG2sMcX8DLBpOO89TP2QHCUcEfMKa6XuJyS3BhaRszQY9wHoyu3VFsM7RJUs7Uqpsv892Y3XKLXkYvvquPuqXyjG41OivqL6XA/jTp+sChq9T0KuNooX2CldeaVlfKOaV/cwB8lC97iIgWilZEqj6dEUpWjg/wlEpKdrvILvoBGqIZ4q/ZN3fm/785FD24Dt5WOWaShDT3iQ2eIO72yYG7AQ9aPzAgyruWwGHUOxKG7ocGyrSPFo5iTGgp3rUZaa+YWJEmoeViGj4tNXPJ5DUPeQhQaFNnNtVh681OSxDKlLFBEblihe1Y2r4fTu/OKYntUToWCQLSfejBn2tcvSGRWvobt";
@@ -69,6 +67,11 @@ public class Autonomous_Insentive extends LinearOpMode {
     private DcMotor R_INTAKE = null;
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
+
+    public int Count = 0;
+    public int Skystone = 0;
+    public double left = 0;
+    public double right = 0;
 
     public void runOpMode() {
 
@@ -96,17 +99,36 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             resetEncoders();
             servoPos("UP",0);
-            tensorFlow();
-            encoderDrive(10,1,500,500,"UP", 1);
+            encoderDrive(14,1,1400,100,"UP", 1);
+            encoderTurn(1,1,10,"LEFT");
+            vuforia();
+            encoderTurn(1,1,20,"RIGHT");
+            vuforia();
+            encoderTurn(1,1,10,"LEFT");
+            vuforia();
 
-            // Add Range If Statements. Sense where the block is. Left, Mid, Right. Store the vals in a seperate int.
+            telemetry.addData("Skystone", Skystone);
+            telemetry.update();
 
-            encoderDrive(16,1,2500,1000,"DOWN", 0);
-            encoderDrive(-15,1,2500,0,"DOWN", 0);
-            encoderTurn(14.1,1,2500,"RIGHT");
-            encoderDrive(65,1,4000,1000,"UP", 0);
-            encoderDrive(-50,1,4500,0,"UP", 0);
-            encoderTurn(14.1,1,2500,"LEFT");
+            if(Skystone == 1){
+
+                telemetry.addData("left", left);
+                telemetry.update();
+                sleep(5000);
+
+                if (left < 40){
+                    Left();
+                }
+                if ((left > 50 && left < 275) || (left - right) > 100){
+                    Middle();
+                }
+                if (left > 275){
+                    Right();
+                }
+
+            }
+
+            sleep(5000);
 
             killBot(); // Stop Program!
 
@@ -126,6 +148,13 @@ public class Autonomous_Insentive extends LinearOpMode {
             FR_DRIVE.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
+        public void stopWheels(){
+            BL_DRIVE.setPower(0);
+            BR_DRIVE.setPower(0);
+            FL_DRIVE.setPower(0);
+            FR_DRIVE.setPower(0);
+        }
+
         public void killBot(){
             BL_DRIVE.setPower(0);
             BR_DRIVE.setPower(0);
@@ -138,6 +167,62 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             requestOpModeStop();
             stop();
+        }
+
+        public void Left(){
+
+            telemetry.addData("Left", true);
+            telemetry.addData("Middle", false);
+            telemetry.addData("Right", false);
+
+            telemetry.update();
+
+            encoderDrive(11.5,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(14.1,1,2500,"RIGHT");
+            encoderDrive(65,1,4000,1000,"UP", 0);
+            encoderDrive(-50,1,4500,0,"UP", 0);
+            encoderTurn(14.1,1,2500,"LEFT");
+        }
+
+        public void Middle(){
+
+            telemetry.addData("Left", false);
+            telemetry.addData("Middle", true);
+            telemetry.addData("Right", false);
+
+            telemetry.update();
+
+            encoderDrive(11.5,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(14.1,1,2500,"RIGHT");
+            encoderDrive(65,1,4000,1000,"UP", 0);
+            encoderDrive(-50,1,4500,0,"UP", 0);
+            encoderTurn(14.1,1,2500,"LEFT");
+
+        }
+
+        public void Right(){
+
+            telemetry.addData("Left", false);
+            telemetry.addData("Middle", false);
+            telemetry.addData("Right", true);
+
+            telemetry.update();
+
+            encoderDrive(11.5,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(14.1,1,2500,"RIGHT");
+            encoderDrive(65,1,4000,1000,"UP", 0);
+            encoderDrive(-50,1,4500,0,"UP", 0);
+            encoderTurn(14.1,1,2500,"LEFT");
+
+        }
+
+        public void vuforia(){
+            while (Count < 1 && Skystone == 0){
+                tensorFlow();
+            }
         }
 
         public void encoderDrive(double Inches, double Speed, int SleepTimeA, int SleepTimeB, String ServoPos, int Vuforia){
@@ -169,19 +254,14 @@ public class Autonomous_Insentive extends LinearOpMode {
             sleep(SleepTimeA);
             servoPos(ServoPos, 0);
             if (Vuforia == 1){
-                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                while (tfod.getRecognitions().size() == 0){
-                /* TODO
-                    Set the tfod.getRecognitions code to detect whether or not it sees a stone or skystone. The prgrm will exit this loop even if it dosent see the skystone, but only sees the stone! This is bad!
-                 */
-                    tensorFlow();
-                }
+                tensorFlow();
             }
             sleep(SleepTimeB);
 
             resetEncoders();
         }
     public void encoderTurn(double Inches, double Speed, int SleepTime, String Direction){
+
 
         //12in = 90 degrees
 
@@ -235,31 +315,29 @@ public class Autonomous_Insentive extends LinearOpMode {
     }
 
         public void tensorFlow(){
+
             if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
-                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    Count = updatedRecognitions.size();
+
                     // step through the list of recognitions and display boundary info.
                     int i = 0;
                     for (Recognition recognition : updatedRecognitions) {
-                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                recognition.getLeft(), recognition.getTop());
-                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                recognition.getRight(), recognition.getBottom());
+                        telemetry.addData("SkystoneLabel", recognition.getLabel());
+                        telemetry.update();
+                        if (recognition.getLabel() == "Count"){
+                            Skystone = 1;
+                            left = recognition.getLeft();
+                            right = recognition.getRight();
+                        }
                     }
-                    telemetry.update();
                 }
             }
-
         }
 
     private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
+
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
@@ -275,6 +353,7 @@ public class Autonomous_Insentive extends LinearOpMode {
      * Initialize the TensorFlow Object Detection engine.
      */
     private void initTfod() {
+
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
@@ -298,6 +377,7 @@ public class Autonomous_Insentive extends LinearOpMode {
             }
         }
         public void intake(double speed){
+
             R_INTAKE.setPower(speed);
             L_INTAKE.setPower(speed);
         }
