@@ -23,7 +23,9 @@
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OR TORT (INCLUDING NEGLIGENCnearOpMode {
+
+    private static final String TFOD_MODEL_ASE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -36,10 +38,28 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.tfod.TfodSkyStone;
+
+import java.util.List;
+
 @Autonomous(name="Autonomous_Insentive", group="Linear Opmode")
 //@Disabled
 
 public class Autonomous_Insentive extends LinearOpMode {
+
+    private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
+    private static final String LABEL_FIRST_ELEMENT = "Stone";
+    private static final String LABEL_SECOND_ELEMENT = "Skystone";
+
+    private static final String VUFORIA_KEY =
+            "Ade+9uD/////AAABma6ja62RQUgPiQ0Q5nG2sMcX8DLBpOO89TP2QHCUcEfMKa6XuJyS3BhaRszQY9wHoyu3VFsM7RJUs7Uqpsv892Y3XKLXkYvvquPuqXyjG41OivqL6XA/jTp+sChq9T0KuNooX2CldeaVlfKOaV/cwB8lC97iIgWilZEqj6dEUpWjg/wlEpKdrvILvoBGqIZ4q/ZN3fm/785FD24Dt5WOWaShDT3iQ2eIO72yYG7AQ9aPzAgyruWwGHUOxKG7ocGyrSPFo5iTGgp3rUZaa+YWJEmoeViGj4tNXPJ5DUPeQhQaFNnNtVh681OSxDKlLFBEblihe1Y2r4fTu/OKYntUToWCQLSfejBn2tcvSGRWvobt";
+    private VuforiaLocalizer vuforia;
+    private TFObjectDetector tfod;
 
     private Servo SL_PULL = null;
     private DcMotor BL_DRIVE = null;
@@ -69,17 +89,23 @@ public class Autonomous_Insentive extends LinearOpMode {
         FL_DRIVE.setDirection(DcMotor.Direction.FORWARD);
         FR_DRIVE.setDirection(DcMotor.Direction.REVERSE);
 
+        Initialize();
         waitForStart();
 
         if (opModeIsActive()) {
 
             resetEncoders();
             servoPos("UP",0);
-            encoderDrive(26,1,2500,1000,"DOWN");
-            encoderDrive(-15,1,2500,0,"DOWN");
+            tensorFlow();
+            encoderDrive(10,1,500,500,"UP", 1);
+
+            // Add Range If Statements. Sense where the block is. Left, Mid, Right. Store the vals in a seperate int.
+
+            encoderDrive(16,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
             encoderTurn(14.1,1,2500,"RIGHT");
-            encoderDrive(65,1,4000,1000,"UP");
-            encoderDrive(-50,1,4500,0,"UP");
+            encoderDrive(65,1,4000,1000,"UP", 0);
+            encoderDrive(-50,1,4500,0,"UP", 0);
             encoderTurn(14.1,1,2500,"LEFT");
 
             killBot(); // Stop Program!
@@ -106,11 +132,15 @@ public class Autonomous_Insentive extends LinearOpMode {
             FL_DRIVE.setPower(0);
             FR_DRIVE.setPower(0);
 
+            if (tfod != null) {
+                tfod.shutdown();
+            }
+
             requestOpModeStop();
             stop();
         }
 
-        public void encoderDrive(double Inches, double Speed, int SleepTimeA, int SleepTimeB, String ServoPos){
+        public void encoderDrive(double Inches, double Speed, int SleepTimeA, int SleepTimeB, String ServoPos, int Vuforia){
 
             double Diameter = 11.21;
             double EncoderTurns = 288;
@@ -132,11 +162,21 @@ public class Autonomous_Insentive extends LinearOpMode {
             FR_DRIVE.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             /*TODO
-                Get servo position and return out of function when at "DOWN" pos rather than using 2 sleep times
-             */
+               Get servo position and return out of function when at "DOWN" pos rather than using 2 sleep times
+               Tensor flow can see the location of the skystone given that we create a range for the skystone.left value;
+               */
 
             sleep(SleepTimeA);
             servoPos(ServoPos, 0);
+            if (Vuforia == 1){
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                while (tfod.getRecognitions().size() == 0){
+                /* TODO
+                    Set the tfod.getRecognitions code to detect whether or not it sees a stone or skystone. The prgrm will exit this loop even if it dosent see the skystone, but only sees the stone! This is bad!
+                 */
+                    tensorFlow();
+                }
+            }
             sleep(SleepTimeB);
 
             resetEncoders();
@@ -181,6 +221,66 @@ public class Autonomous_Insentive extends LinearOpMode {
         sleep(SleepTime);
 
         resetEncoders();
+    }
+
+        public void Initialize(){
+
+            initVuforia();
+            initTfod();
+
+        if (tfod != null) {
+            tfod.activate();
+        }
+
+    }
+
+        public void tensorFlow(){
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                if (updatedRecognitions != null) {
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : updatedRecognitions) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
+                    }
+                    telemetry.update();
+                }
+            }
+
+        }
+
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+
+    /**
+     * Initialize the TensorFlow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.8;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
         public void servoPos(String position, int SleepTime){
