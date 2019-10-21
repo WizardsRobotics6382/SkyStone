@@ -68,10 +68,10 @@ public class DistanceSenseTest extends LinearOpMode {
 
         while(BK_DIST.getDistance(DistanceUnit.INCH) < stopDist || BK_DIST.getDistance(DistanceUnit.INCH) == 0){
             if(R_DIST.getDistance(DistanceUnit.INCH) > targetDist){
-                drive(1,0.9);
+                drive(0.9,0.7);
             }
             if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
-                drive(0.9,1);
+                drive(0.7,0.9);
             }
         }
     }
