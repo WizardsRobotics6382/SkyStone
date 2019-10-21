@@ -195,15 +195,15 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             telemetry.update();
 
-            encoderTurn(10.1,1,2500,"RIGHT");
-            encoderTurn(10.1,1,2500,"LEFT");
+            encoderTurn(20.1,1,2500,"RIGHT");
+            encoderTurn(20.1,1,2500,"LEFT");
 
             encoderDrive(11.5,1,2500,1000,"DOWN", 0);
             encoderDrive(-15,1,2500,0,"DOWN", 0);
-            encoderTurn(14.1,1,2500,"RIGHT");
+            encoderTurn(20.1,1,2500,"RIGHT");
             encoderDrive(65,1,4000,1000,"UP", 0);
             encoderDrive(-50,1,4500,0,"UP", 0);
-            encoderTurn(14.1,1,2500,"LEFT");
+            encoderTurn(20.1,1,2500,"LEFT");
 
         }
 

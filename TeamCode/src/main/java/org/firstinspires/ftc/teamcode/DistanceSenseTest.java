@@ -10,13 +10,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name="DistanceSenseTest", group="Linear Opmode")
+@TeleOp(name="Autonomous_Insentive", group="Linear Opmode")
 //@Disabled
 
 public class DistanceSenseTest extends LinearOpMode {
 
-    private DistanceSensor BK_DIST = null;
-    private DistanceSensor R_DIST = null;
+
     private Servo SL_PULL = null;
     private DcMotor BL_DRIVE = null;
     private DcMotor BR_DRIVE = null;
@@ -25,6 +24,8 @@ public class DistanceSenseTest extends LinearOpMode {
     private DcMotor R_INTAKE = null;
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
+    private DistanceSensor BK_DIST = null;
+    private DistanceSensor R_DIST = null;
 
     public void runOpMode() {
 
@@ -51,7 +52,7 @@ public class DistanceSenseTest extends LinearOpMode {
 
         if (opModeIsActive()){
 
-            distanceDriveForwards(5,5);
+        distanceDriveForward(5,5);
 
         }
     }
@@ -63,14 +64,14 @@ public class DistanceSenseTest extends LinearOpMode {
         FR_DRIVE.setPower(rightPower);
     }
 
-    public void distanceDriveForwards(double stopDist, double targetDist){
+    public void distanceDriveForward(double stopDist, double targetDist){
 
-        while(BK_DIST.getDistance(DistanceUnit.INCH) > stopDist || BK_DIST.getDistance(DistanceUnit.INCH) == 0){
+        while(BK_DIST.getDistance(DistanceUnit.INCH) < stopDist || BK_DIST.getDistance(DistanceUnit.INCH) == 0){
             if(R_DIST.getDistance(DistanceUnit.INCH) > targetDist){
-                drive(0.9,0.8);
+                drive(1,0.9);
             }
-            else if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
-                drive(0.8,0.9);
+            if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
+                drive(0.9,1);
             }
         }
     }
