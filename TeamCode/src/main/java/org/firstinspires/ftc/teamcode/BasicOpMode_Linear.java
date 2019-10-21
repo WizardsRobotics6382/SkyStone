@@ -33,8 +33,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -55,6 +57,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
+    private DistanceSensor BK_DIST = null;
+    private DistanceSensor R_DIST = null;
     private Servo SL_PULL = null;
     private DcMotor BL_DRIVE = null;
     private DcMotor BR_DRIVE = null;
@@ -66,6 +70,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     public void runOpMode() {
 
+        BK_DIST = hardwareMap.get(DistanceSensor.class, "BK_DIST");
+        R_DIST = hardwareMap.get(DistanceSensor.class, "R_DIST");
         SL_PULL = hardwareMap.get(Servo.class, "SL_PULL");
         BL_DRIVE = hardwareMap.get(DcMotor.class, "BL_DRIVE");
         BR_DRIVE = hardwareMap.get(DcMotor.class, "BR_DRIVE");
@@ -146,6 +152,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     public void telemetryUpdate(){
         telemetry.addData("IT", IT.getState());
+        telemetry.addData("BK_DIST", BK_DIST.getDistance(DistanceUnit.INCH));
+        telemetry.addData("BK_DIST", R_DIST.getDistance(DistanceUnit.INCH));
         telemetry.update();
     }
 }

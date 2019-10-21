@@ -15,7 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class DistanceSenseTest extends LinearOpMode {
 
-
+    private DistanceSensor BK_DIST = null;
+    private DistanceSensor R_DIST = null;
     private Servo SL_PULL = null;
     private DcMotor BL_DRIVE = null;
     private DcMotor BR_DRIVE = null;
@@ -24,8 +25,6 @@ public class DistanceSenseTest extends LinearOpMode {
     private DcMotor R_INTAKE = null;
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
-    private DistanceSensor BK_DIST = null;
-    private DistanceSensor R_DIST = null;
 
     public void runOpMode() {
 
@@ -68,10 +67,10 @@ public class DistanceSenseTest extends LinearOpMode {
 
         while(BK_DIST.getDistance(DistanceUnit.INCH) > stopDist || BK_DIST.getDistance(DistanceUnit.INCH) == 0){
             if(R_DIST.getDistance(DistanceUnit.INCH) > targetDist){
-                drive(1,0.9);
+                drive(0.9,0.8);
             }
             else if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
-                drive(0.9,1);
+                drive(0.8,0.9);
             }
         }
     }
