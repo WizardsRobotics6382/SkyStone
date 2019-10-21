@@ -125,7 +125,6 @@ public class Autonomous_Insentive extends LinearOpMode {
                 if (left > 275){
                     Right();
                 }
-
             }
 
             sleep(5000);
