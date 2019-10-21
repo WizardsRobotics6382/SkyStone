@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name="Autonomous_Insentive", group="Linear Opmode")
+@TeleOp(name="DistanceSenseTest", group="Linear Opmode")
 //@Disabled
 
 public class DistanceSenseTest extends LinearOpMode {
@@ -52,7 +52,7 @@ public class DistanceSenseTest extends LinearOpMode {
 
         if (opModeIsActive()){
 
-        distanceDriveBackwards(5,5);
+            distanceDriveForwards(5,5);
 
         }
     }
@@ -64,14 +64,14 @@ public class DistanceSenseTest extends LinearOpMode {
         FR_DRIVE.setPower(rightPower);
     }
 
-    public void distanceDriveBackwards(double stopDist, double targetDist){
+    public void distanceDriveForwards(double stopDist, double targetDist){
 
-        while(BK_DIST.getDistance(DistanceUnit.INCH) < stopDist){
+        while(BK_DIST.getDistance(DistanceUnit.INCH) > stopDist || BK_DIST.getDistance(DistanceUnit.INCH) == 0){
             if(R_DIST.getDistance(DistanceUnit.INCH) > targetDist){
-                drive(0.9,1);
-            }
-            if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
                 drive(1,0.9);
+            }
+            else if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
+                drive(0.9,1);
             }
         }
     }
