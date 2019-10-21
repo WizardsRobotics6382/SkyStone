@@ -119,11 +119,14 @@ public class Autonomous_Insentive extends LinearOpMode {
                 if (left < 40){
                     Left();
                 }
-                if ((left > 50 && left < 275) || (left - right) > 100){
+                else if ((left > 50 && left < 275) || (left - right) > 100){
                     Middle();
                 }
-                if (left > 275){
+                else if (left > 275){
                     Right();
+                }
+                else {
+                    Middle();
                 }
             }
 
@@ -191,6 +194,9 @@ public class Autonomous_Insentive extends LinearOpMode {
             telemetry.addData("Right", false);
 
             telemetry.update();
+
+            encoderTurn(10.1,1,2500,"RIGHT");
+            encoderTurn(10.1,1,2500,"LEFT");
 
             encoderDrive(11.5,1,2500,1000,"DOWN", 0);
             encoderDrive(-15,1,2500,0,"DOWN", 0);
@@ -271,26 +277,18 @@ public class Autonomous_Insentive extends LinearOpMode {
         if (Direction == "RIGHT") {
             BL_DRIVE.setTargetPosition((int) DesiredPos);
             BR_DRIVE.setTargetPosition((int) -DesiredPos);
-            FL_DRIVE.setTargetPosition((int) DesiredPos);
-            FR_DRIVE.setTargetPosition((int) -DesiredPos);
         }
         else if (Direction == "LEFT") {
             BL_DRIVE.setTargetPosition((int) -DesiredPos);
             BR_DRIVE.setTargetPosition((int) DesiredPos);
-            FL_DRIVE.setTargetPosition((int) -DesiredPos);
-            FR_DRIVE.setTargetPosition((int) DesiredPos);
         }
         else {
             BL_DRIVE.setTargetPosition(0);
             BR_DRIVE.setTargetPosition(0);
-            FL_DRIVE.setTargetPosition(0);
-            FR_DRIVE.setTargetPosition(0);
         }
 
         BL_DRIVE.setPower(Speed);
         BR_DRIVE.setPower(Speed);
-        FL_DRIVE.setPower(Speed);
-        FR_DRIVE.setPower(Speed);
 
         BL_DRIVE.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BR_DRIVE.setMode(DcMotor.RunMode.RUN_TO_POSITION);
