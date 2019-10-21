@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name="Autonomous_Insentive", group="Linear Opmode")
+@TeleOp(name="DistanceSenseTest", group="Linear Opmode")
 //@Disabled
 
 public class DistanceSenseTest extends LinearOpMode {
