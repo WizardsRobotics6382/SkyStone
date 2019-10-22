@@ -98,6 +98,7 @@ public class Autonomous_Insentive extends LinearOpMode {
         if (opModeIsActive()) {
 
             resetEncoders();
+
             servoPos("UP",0);
             encoderDrive(14,1,1400,100,"UP", 1);
             encoderTurn(1,1,10,"LEFT");
@@ -125,12 +126,7 @@ public class Autonomous_Insentive extends LinearOpMode {
                 else if (left > 275){
                     Right();
                 }
-                else {
-                    Middle();
-                }
             }
-
-            sleep(5000);
 
             killBot(); // Stop Program!
 
@@ -195,15 +191,24 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             telemetry.update();
 
-            encoderTurn(20.1,1,2500,"RIGHT");
-            encoderTurn(20.1,1,2500,"LEFT");
+            encoderDrive(-6,1,0,5000,"UP",0);
+            encoderTurn(13,1,5000,"RIGHT");
+            //4 in Is one block
+            encoderDrive(4,1,0,5000,"UP",0);
+            encoderTurn(13.5,1,5000,"LEFT");
+            encoderDrive(5.5,1,0,5000,"UP",0);
 
             encoderDrive(11.5,1,2500,1000,"DOWN", 0);
             encoderDrive(-15,1,2500,0,"DOWN", 0);
-            encoderTurn(20.1,1,2500,"RIGHT");
+            encoderTurn(13,1,5000,"RIGHT");
             encoderDrive(65,1,4000,1000,"UP", 0);
-            encoderDrive(-50,1,4500,0,"UP", 0);
-            encoderTurn(20.1,1,2500,"LEFT");
+            encoderDrive(-41,1,4500,0,"UP", 0);
+            encoderTurn(13.5,1,5000,"LEFT");
+            encoderDrive(10,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(13,1,5000,"RIGHT");
+            encoderDrive(30,1,5000,0,"DOWN", 0);
+            encoderDrive(-8,1,0,5000,"UP", 0);
 
         }
 
@@ -215,12 +220,24 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             telemetry.update();
 
+            encoderDrive(-6,1,0,5000,"UP",0);
+            encoderTurn(13,1,5000,"RIGHT");
+            //4 in Is one block
+            encoderDrive(8,1,0,5000,"UP",0);
+            encoderTurn(13.5,1,5000,"LEFT");
+            encoderDrive(5.5,1,0,5000,"UP",0);
+
             encoderDrive(11.5,1,2500,1000,"DOWN", 0);
             encoderDrive(-15,1,2500,0,"DOWN", 0);
-            encoderTurn(14.1,1,2500,"RIGHT");
+            encoderTurn(13,1,5000,"RIGHT");
             encoderDrive(65,1,4000,1000,"UP", 0);
-            encoderDrive(-50,1,4500,0,"UP", 0);
-            encoderTurn(14.1,1,2500,"LEFT");
+            encoderDrive(-41,1,4500,0,"UP", 0);
+            encoderTurn(13.5,1,5000,"LEFT");
+            encoderDrive(10,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(13,1,5000,"RIGHT");
+            encoderDrive(30,1,5000,0,"DOWN", 0);
+            encoderDrive(-8,1,0,5000,"UP", 0);
 
         }
 
@@ -277,18 +294,26 @@ public class Autonomous_Insentive extends LinearOpMode {
         if (Direction == "RIGHT") {
             BL_DRIVE.setTargetPosition((int) DesiredPos);
             BR_DRIVE.setTargetPosition((int) -DesiredPos);
+            FL_DRIVE.setTargetPosition((int) DesiredPos);
+            FR_DRIVE.setTargetPosition((int) -DesiredPos);
         }
         else if (Direction == "LEFT") {
             BL_DRIVE.setTargetPosition((int) -DesiredPos);
             BR_DRIVE.setTargetPosition((int) DesiredPos);
+            FL_DRIVE.setTargetPosition((int) -DesiredPos);
+            FR_DRIVE.setTargetPosition((int) DesiredPos);
         }
         else {
             BL_DRIVE.setTargetPosition(0);
             BR_DRIVE.setTargetPosition(0);
+            FL_DRIVE.setTargetPosition(0);
+            FR_DRIVE.setTargetPosition(0);
         }
 
         BL_DRIVE.setPower(Speed);
         BR_DRIVE.setPower(Speed);
+        FL_DRIVE.setPower(Speed);
+        FR_DRIVE.setPower(Speed);
 
         BL_DRIVE.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BR_DRIVE.setMode(DcMotor.RunMode.RUN_TO_POSITION);
