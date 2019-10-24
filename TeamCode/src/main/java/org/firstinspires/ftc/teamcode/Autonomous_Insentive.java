@@ -43,6 +43,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
+import java.sql.Time;
 import java.util.List;
 
 @Autonomous(name="Autonomous_Insentive", group="Linear Opmode")
@@ -73,6 +74,7 @@ public class Autonomous_Insentive extends LinearOpMode {
     public double left = 0;
     public double right = 0;
 
+
     public void runOpMode() {
 
         SL_PULL = hardwareMap.get(Servo.class, "SL_PULL");
@@ -101,6 +103,7 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             servoPos("UP",0);
             encoderDrive(14,1,1400,100,"UP", 1);
+
             encoderTurn(1,1,10,"LEFT");
             vuforia();
             encoderTurn(1,1,20,"RIGHT");
@@ -136,6 +139,10 @@ public class Autonomous_Insentive extends LinearOpMode {
             //This is a backup stop loop if the robot does not stop after the end of the autonomous code.
             requestOpModeStop(); // You've Gone Too Far! Stop The Machine!
             stop(); // Redundancy, Redundancy, Redundancy...
+            telemetry.addLine("stop_attempt");
+            telemetry.update();
+            sleep(3000);
+
             }
         }
 
@@ -161,6 +168,10 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             if (tfod != null) {
                 tfod.shutdown();
+                telemetry.addLine("tfod_stop");
+                telemetry.update();
+                sleep(3000);
+
             }
 
             requestOpModeStop();
@@ -175,12 +186,18 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             telemetry.update();
 
-            encoderDrive(11.5,1,2500,1000,"DOWN", 0);
+            encoderDrive(11.8,1,2500,1000,"DOWN", 0);
             encoderDrive(-15,1,2500,0,"DOWN", 0);
             encoderTurn(14.1,1,2500,"RIGHT");
             encoderDrive(65,1,4000,1000,"UP", 0);
             encoderDrive(-50,1,4500,0,"UP", 0);
-            encoderTurn(14.1,1,2500,"LEFT");
+            encoderTurn(13.5,1,5000,"LEFT");
+            encoderDrive(10,1,2500,1000,"DOWN", 0);
+            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderTurn(13,1,5000,"RIGHT");
+            encoderDrive(30,1,5000,0,"DOWN", 0);
+            encoderDrive(-8,1,0,5000,"DOWN", 0);
+
         }
 
         public void Middle(){
@@ -220,31 +237,35 @@ public class Autonomous_Insentive extends LinearOpMode {
 
             telemetry.update();
 
-            encoderDrive(-6,1,0,5000,"UP",0);
-            encoderTurn(13,1,5000,"RIGHT");
+            encoderDrive(-5,1,0,5000,"UP",0);
+            encoderTurn(12.80,1,5000,"RIGHT");
             //4 in Is one block
-            encoderDrive(8,1,0,5000,"UP",0);
-            encoderTurn(13.5,1,5000,"LEFT");
-            encoderDrive(5.5,1,0,5000,"UP",0);
+            encoderDrive(12,1,0,5000,"UP",0);
+            encoderTurn(13.4,1,5000,"LEFT");
+            encoderDrive(4.5,1,0,5000,"UP",0);
 
             encoderDrive(11.5,1,2500,1000,"DOWN", 0);
-            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderDrive(-12,1,2500,0,"DOWN", 0);
             encoderTurn(13,1,5000,"RIGHT");
             encoderDrive(65,1,4000,1000,"UP", 0);
-            encoderDrive(-41,1,4500,0,"UP", 0);
+            encoderDrive(-43.5,1,4500,0,"UP", 0);
             encoderTurn(13.5,1,5000,"LEFT");
-            encoderDrive(10,1,2500,1000,"DOWN", 0);
-            encoderDrive(-15,1,2500,0,"DOWN", 0);
+            encoderDrive(9,1,2500,1000,"DOWN", 0);
+            encoderDrive(-18,1,2500,0,"DOWN", 0);
             encoderTurn(13,1,5000,"RIGHT");
             encoderDrive(30,1,5000,0,"DOWN", 0);
-            encoderDrive(-8,1,0,5000,"UP", 0);
+            encoderDrive(-16,1,0,5000,"DOWN", 0);
 
         }
 
         public void vuforia(){
-            while (Count < 1 && Skystone == 0){
+            int x=200;
+            while (Count < 1 && Skystone == 0 && x>0){
+                x=x-1;
                 tensorFlow();
+
             }
+            
         }
 
         public void encoderDrive(double Inches, double Speed, int SleepTimeA, int SleepTimeB, String ServoPos, int Vuforia){
