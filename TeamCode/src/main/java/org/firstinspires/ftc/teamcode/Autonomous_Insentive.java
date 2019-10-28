@@ -265,7 +265,7 @@ public class Autonomous_Insentive extends LinearOpMode {
                 tensorFlow();
 
             }
-            
+
         }
 
         public void encoderDrive(double Inches, double Speed, int SleepTimeA, int SleepTimeB, String ServoPos, int Vuforia){
