@@ -415,6 +415,9 @@ public class Autonomous_Insentive extends LinearOpMode {
             else if (position == "DOWN"){
                 SL_PULL.setPosition(0);
             }
+            else if (position == "MIDDLE"){
+                SL_PULL.setPosition(90);
+            }
             else {
                 SL_PULL.setPosition(0);
             }
