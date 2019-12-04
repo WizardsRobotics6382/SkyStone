@@ -90,10 +90,10 @@ public class BasicOpMode_Linear extends LinearOpMode {
         FR_DRIVE.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
-
         while (opModeIsActive()) {
 
-            drive(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+
+            drive(-gamepad1.left_stick_y, -gamepad1.right_ stick_y);
             intakeCalc(gamepad1.right_bumper, gamepad1.left_bumper);
             servoCalc(gamepad1.y, gamepad1.a);
             telemetryUpdate();
