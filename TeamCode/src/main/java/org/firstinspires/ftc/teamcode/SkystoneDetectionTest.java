@@ -94,7 +94,19 @@ public class SkystoneDetectionTest extends LinearOpMode {
 //            strafe(0.4, 200);
 //            moveDistance(0.4, 700);
 
+            /**
+             * vvv Program vvv
+             */
+
+            if(valLeft == 255 && valMid == 0 && valRight == 0){
+                sleep(200);
+                BR_drive.setPower(1);
+                BL_drive.setPower(1);
+
+            }
+
         }
+
     }
 
     //detection pipeline
@@ -219,11 +231,8 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 default: {
                     return input;
                 }
+
             }
         }
     }
-
-}   if(valLeft == 255 && valMid == 0 && valRight == 0){
-        }
-}
 }

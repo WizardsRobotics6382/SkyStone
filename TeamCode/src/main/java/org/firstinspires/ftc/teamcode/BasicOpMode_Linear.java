@@ -93,7 +93,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            drive(-gamepad1.left_stick_y, -gamepad1.right_ stick_y);
+            drive(-gamepad1.left_stick_y, -gamepad1.left_stick_y);
             intakeCalc(gamepad1.right_bumper, gamepad1.left_bumper);
             servoCalc(gamepad1.y, gamepad1.a);
             telemetryUpdate();
