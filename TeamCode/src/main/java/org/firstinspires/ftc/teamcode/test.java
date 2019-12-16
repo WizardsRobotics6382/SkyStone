@@ -24,10 +24,10 @@ public class test extends LinearOpMode {
 
     public void Lift(boolean Up, boolean Down){
             if(Up == true){
-                LL.setPower(0.5);
+                LL.setPower(1);
             }
             else if(Down == true){
-                LL.setPower(-0.1);
+                LL.setPower(-0.5);
             }
             else{
                 LL.setPower(0);

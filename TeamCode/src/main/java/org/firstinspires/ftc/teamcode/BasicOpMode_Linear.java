@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -67,6 +68,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor R_INTAKE = null;
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
+    private DcMotor LL = null;
 
     public void runOpMode() {
 
@@ -80,6 +82,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         R_INTAKE = hardwareMap.get(DcMotor.class, "RI");
         L_INTAKE = hardwareMap.get(DcMotor.class, "LI");
         IT = hardwareMap.get(DigitalChannel.class, "IT");
+        LL = hardwareMap.get(DcMotor.class, "LL");
 
         IT.setMode(DigitalChannel.Mode.INPUT);
         R_INTAKE.setDirection(DcMotor.Direction.FORWARD);
@@ -92,68 +95,88 @@ public class BasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-
             drive(-gamepad1.left_stick_y, -gamepad1.left_stick_y);
-            intakeCalc(gamepad1.right_bumper, gamepad1.left_bumper);
+            drive_turn(-gamepad1.right_stick_x,-gamepad1.left_stick_x);
+            intake_out(gamepad1.right_trigger);
+            intake_in(-gamepad1.left_trigger);
             servoCalc(gamepad1.y, gamepad1.a);
-            telemetryUpdate();
+            Lift(gamepad1.dpad_up, gamepad1.dpad_down);
+            telemetryUpdae();
 
+
+                }
         }
-    }
-    public void servoCalc(Boolean UP, Boolean DOWN){
-        if (UP){
+
+
+    public void servoCalc(Boolean UP, Boolean DOWN) {
+        if (UP) {
             servoPos("UP");
-        }
-        else if (DOWN){
+        } else if (DOWN) {
             servoPos("DOWN");
         }
     }
 
-    public void servoPos(String position){
-        if (position == "UP"){
-            SL_PULL.setPosition(180);
-        }
-        else if (position == "DOWN"){
-            SL_PULL.setPosition(0);
-        }
-        else {
-            SL_PULL.setPosition(0);
+    public void Lift(boolean up, boolean down) {
+        if (up == true) {
+            LL.setPower(1);
+
+        } else if (down == true) {
+            LL.setPower(-.5);
+
+        } else {
+            LL.setPower(0);
+
         }
     }
 
-    public void drive(float leftPower, float rightPower){
+    public void servoPos(String position) {
+        if (position == "UP") {
+            SL_PULL.setPosition(270);
+        } else if (position == "DOWN") {
+            SL_PULL.setPosition(180);
+        } else {
+            SL_PULL.setPosition(0);
+        }
+    }
+    public void drive_turn(float right ,float left ){
+        BL_DRIVE.setPower(left );
+        BR_DRIVE.setPower(right);
+        FL_DRIVE.setPower(left );
+        FR_DRIVE.setPower(right);
+    }
+
+    public void drive(float leftPower, float rightPower) {
         BL_DRIVE.setPower(leftPower);
         BR_DRIVE.setPower(rightPower);
         FL_DRIVE.setPower(leftPower);
         FR_DRIVE.setPower(rightPower);
     }
 
-    public void intakeCalc(boolean buttonIn, boolean buttonOut){
-        if (buttonIn == true || (buttonOut == true)) {
-            if (buttonOut){
-                intake(1);
-            }
-            else if (buttonIn && IT.getState() == true){
-                intake(-1);
-            }
-            else{
-                intake(0);
-            }
+    /*public void intakeCalc(float in, float ) {
+        R_INTAKE.setPower(in);
+        L_INTAKE.setPower(out);
+    }
+
+     */
+    public  void  intake_out(float out ){
+        R_INTAKE.setPower(out);
+        L_INTAKE.setPower(out);
+    }
+        /*public void intake( double speed){
+            R_INTAKE.setPower(speed);
+            L_INTAKE.setPower(speed);
         }
-        else {
-            intake(0);
+
+*/
+        public void intake_in(float in ){
+            L_INTAKE.setPower(in);
+            R_INTAKE.setPower(in);
+        }
+        public void telemetryUpdae(){
+            telemetry.addData("IT", IT.getState());
+            telemetry.addData("BK_DIST", BK_DIST.getDistance(DistanceUnit.INCH));
+            telemetry.addData("BK_DIST", R_DIST.getDistance(DistanceUnit.INCH));
+            telemetry.update();
         }
     }
 
-    public void intake(double speed){
-        R_INTAKE.setPower(speed);
-        L_INTAKE.setPower(speed);
-    }
-
-    public void telemetryUpdate(){
-        telemetry.addData("IT", IT.getState());
-        telemetry.addData("BK_DIST", BK_DIST.getDistance(DistanceUnit.INCH));
-        telemetry.addData("BK_DIST", R_DIST.getDistance(DistanceUnit.INCH));
-        telemetry.update();
-    }
-}

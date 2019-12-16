@@ -72,10 +72,10 @@ public class SkystoneDetectionTest extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-        BL_DRIVE = hardwareMap.get(DcMotor.class, "BL");
-        BR_DRIVE = hardwareMap.get(DcMotor.class, "BR");
-        FL_DRIVE = hardwareMap.get(DcMotor.class, "FL");
-        FR_DRIVE = hardwareMap.get(DcMotor.class, "FR");
+        BL_DRIVE = hardwareMap.get(DcMotor.class, "BL_DRIVE");
+        BR_DRIVE = hardwareMap.get(DcMotor.class, "BR_DRIVE");
+        FL_DRIVE = hardwareMap.get(DcMotor.class, "FL_DRIVE");
+        FR_DRIVE = hardwareMap.get(DcMotor.class, "FR_DRIVE");
 
 
         webcam.openCameraDevice();//open camera
@@ -92,7 +92,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
             telemetry.addData("Width", cols);
 
             telemetry.update();
-            sleep(100);
+            sleep(200);
             //call movement functions
 //            strafe(0.4, 200);
 //            moveDistance(0.4, 700);
@@ -101,24 +101,60 @@ public class SkystoneDetectionTest extends LinearOpMode {
              * vvv Program vvv
              */
 
+            //left
             if(valLeft == 255 && valMid == 0 && valRight == 0){
                 sleep(200);
-                encoderDrive(11.8,1,100,100,"DOWN");
-                encoderTurn(10,1,100,"RIGHT");
+                    encoderTurn(5,3,100,"left");
+                encoderDrive(11,3,100,100,"DOWN");
+                encoderDrive(-11,3,100,100,"DOWN");
+                    encoderTurn(12,3,100,"RIGHT");
+                encoderDrive(40,3,100,100,"DOWN");
+
+
+
+                encoderDrive(-40,3,100,100,"UP");
+                    encoderTurn(12,3,100,"LEFT");
+                encoderDrive(11,3,100,100,"DOWN");
+                encoderDrive(-11, 3,100,100,"DOWN");
+                    encoderTurn(12,3,100,"RIGHT");
+                encoderDrive(20,3,100,100,"DOWN");
+                encoderDrive(8,1,100,100,"MIDDLE");
+
+
+
 
 
             }
+            //Middle
             if(valLeft == 0 && valMid == 255 && valRight == 0){
                 sleep(200);
-                encoderDrive(11,1,100,100,"UP");
-                encoderTurn(10,1,100,"LEFT");
+               encoderDrive(11,1,100,100,"DOWN");
+                encoderDrive(-11,1,100,100,"DOWN");
+                    encoderTurn(12,3,100,"RIGHT");
+                encoderDrive(40,6,100,100,"DOWN");
+
+
+                encoderDrive(-28,6,100,100,"UP");
+                    encoderTurn(12,6,100,"LEFT");
+                encoderDrive(11,4,100,100,"DOWN");
+                encoderDrive(-11,3,100,100,"DOWN");
+                        encoderTurn(12,4,100,"RIGHT");
+                encoderDrive(28,4,100,100,"DOWN");
+                encoderDrive(-8,3,100,100,"MIDDLE");
+
+
 
 
             }
+            //right
             if(valLeft == 0 && valMid == 0 && valRight == 255 ){
                 sleep(200);
-                encoderDrive(11,1,100,100,"UP");
-                encoderTurn(10,1,100,"RIGHT");
+                    encoderTurn(5,3,100,"left");
+                    encoderTurn(12,3,100,"RIGHT");
+                encoderDrive(8,1,100,100,"DOWN");
+                encoderDrive(-11,1,100,100,"DOWN");
+                    encoderTurn(40,1,100,"LEFT");
+
 
             }
 
@@ -219,7 +255,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
             SL_PULL.setPosition(0);
         }
         else if (position == "MIDDLE"){
-            SL_PULL.setPosition(90);
+            SL_PULL.setPosition(120);
         }
         else {
             SL_PULL.setPosition(0);
@@ -262,7 +298,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
             }
 
             @Override
-            public Mat processFrame(Mat input) {
+                public Mat processFrame(Mat input) {
                 contoursList.clear();
                 /*
                  * This pipeline finds the contours of yellow blobs such as the Gold Mineral
