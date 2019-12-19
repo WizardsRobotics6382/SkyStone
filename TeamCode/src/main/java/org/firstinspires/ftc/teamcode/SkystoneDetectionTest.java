@@ -110,23 +110,14 @@ public class SkystoneDetectionTest extends LinearOpMode {
             //RIGHT
             if(valLeft == 255 && valMid == 255 && valRight == 0){
                 sleep(200);
-                    //encoderTurn(5,1,1000,"left");
-                encoderDrive(11,1,2000,2000,"DOWN");
-                encoderDrive(-11,1,2000,2000,"DOWN");
-                    encoderTurn(12,1,2000,"RIGHT");
-                encoderDrive(40,1,2000,2000,"DOWN");
+                sleep(200);
+                encoderDrive(40, .5, 100, 100, "UP");
 
-
-
-                encoderDrive(-40,1,2000,2000,"UP");
-                    encoderTurn(12,1,2000,"LEFT");
-                encoderDrive(11,1,2000,2000,"DOWN");
-                encoderDrive(-11, 1,2000,2000,"DOWN");
-                    encoderTurn(12,1,2000,"RIGHT");
-                encoderDrive(20,1,2000,2000,"DOWN");
-                encoderDrive(8,1,2000,2000,"MIDDLE");
-
-
+                sleep(2000);
+                encoderTurn(16.25,1,100,"RIGHT");
+                encoderDrive(24,.5,2000,2000,"DOWN");
+                encoderDrive(-20,1,2000,2000,"DOWN");
+                killBot();
 
 
 
@@ -141,6 +132,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
                encoderDrive(24,.5,2000,2000,"DOWN");
                 encoderDrive(-20,1,2000,2000,"DOWN");
                 encoderDrive(0,0,100,1000,"UP");
+                killBot();
                     //encoderTurn(12,3,1000,"RIGHT");
                 //encoderDrive(40,6,1000,100,"DOWN");
 
@@ -166,11 +158,12 @@ public class SkystoneDetectionTest extends LinearOpMode {
                     encoderTurn(5,1,100,"RIGHT");
                 encoderDrive(24,.5,2000,5000,"DOWN");
                 encoderDrive(-20,1,2000,5000,"DOWN");
-                    encoderTurn(35,.55,1000,"RIGHT");
-                 encoderDrive(40,6,100,5000,"DOWN");
-                 encoderDrive(0,0,100,1000,"UP");
-                 encoderDrive(-84,1,1000,1000,"UP");
-                 encoderTurn(35,.5 ,1000,"RIGHT");
+//                    encoderTurn(35,.55,1000,"RIGHT");
+//                 encoderDrive(40,6,100,5000,"DOWN");
+//                 encoderDrive(0,0,100,1000,"UP");
+//                 encoderDrive(-84,1,1000,1000,"UP");
+//                 encoderTurn(35,.5 ,1000,"RIGHT");
+                killBot();
 
                  ;
 
@@ -264,6 +257,13 @@ public class SkystoneDetectionTest extends LinearOpMode {
         FL_DRIVE.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR_DRIVE.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+     void killBot() {
+         BL_DRIVE.setPower(0);
+         BR_DRIVE.setPower(0);
+         FL_DRIVE.setPower(0);
+         FR_DRIVE.setPower(0);
+         webcam.closeCameraDevice();
+     }
     public void servoPos(String position, int SleepTime){
 
         sleep(SleepTime);
