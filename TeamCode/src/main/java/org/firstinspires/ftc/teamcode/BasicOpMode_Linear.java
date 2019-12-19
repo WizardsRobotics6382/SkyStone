@@ -95,8 +95,11 @@ public class BasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-            drive(-gamepad1.left_stick_y, -gamepad1.left_stick_y);
-            drive_turn(-gamepad1.right_stick_x,-gamepad1.left_stick_x);
+            Motor_power motorPower = new Motor_power();
+
+            motorPower = drive(gamepad1.left_stick_y, motorPower);
+            motorPower = drive_turn(-gamepad1.right_stick_x,gamepad1.right_stick_x, motorPower);
+            setMotorPower(motorPower);
             intake_out(gamepad1.right_trigger);
             intake_in(-gamepad1.left_trigger);
             servoCalc(gamepad1.y, gamepad1.a);
@@ -108,12 +111,13 @@ public class BasicOpMode_Linear extends LinearOpMode {
         }
 
 
-    public void servoCalc(Boolean UP, Boolean DOWN) {
+    public void servoCalc(boolean UP, boolean DOWN) {
         if (UP) {
             servoPos("UP");
         } else if (DOWN) {
             servoPos("DOWN");
         }
+
     }
 
     public void Lift(boolean up, boolean down) {
@@ -131,25 +135,52 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     public void servoPos(String position) {
         if (position == "UP") {
-            SL_PULL.setPosition(270);
+            SL_PULL.setPosition(0);
         } else if (position == "DOWN") {
             SL_PULL.setPosition(180);
         } else {
             SL_PULL.setPosition(0);
         }
     }
-    public void drive_turn(float right ,float left ){
-        BL_DRIVE.setPower(left );
-        BR_DRIVE.setPower(right);
-        FL_DRIVE.setPower(left );
-        FR_DRIVE.setPower(right);
+
+    public Motor_power drive_turn(float right ,float left, Motor_power motorPower ){
+        if(right > .5) {
+            right = (float) 0.5;
+        }
+        if(left > .5) {
+            left = (float) 0.5;
+        }
+        if(motorPower == null) {
+            motorPower = new Motor_power();
+        }
+        motorPower.BL += left;
+        motorPower.BR += right;
+        motorPower.FL += left;
+        motorPower.FR += right;
+
+        return motorPower;
     }
 
-    public void drive(float leftPower, float rightPower) {
-        BL_DRIVE.setPower(leftPower);
-        BR_DRIVE.setPower(rightPower);
-        FL_DRIVE.setPower(leftPower);
-        FR_DRIVE.setPower(rightPower);
+    public Motor_power drive(float Power, Motor_power motorPower) {
+        if(Power > .5) {
+            Power = (float) .5;
+        }
+        if(motorPower == null) {
+            motorPower = new Motor_power();
+        }
+        motorPower.BL += Power;
+        motorPower.BR += Power;
+        motorPower.FL += Power;
+        motorPower.FR += Power;
+
+        return motorPower;
+    }
+
+    public void setMotorPower(Motor_power motorPower) {
+        BL_DRIVE.setPower(motorPower.BL);
+        BR_DRIVE.setPower(motorPower.BR);
+        FL_DRIVE.setPower(motorPower.FL);
+        FR_DRIVE.setPower(motorPower.FR);
     }
 
     /*public void intakeCalc(float in, float ) {
@@ -168,15 +199,19 @@ public class BasicOpMode_Linear extends LinearOpMode {
         }
 
 */
-        public void intake_in(float in ){
-            L_INTAKE.setPower(in);
-            R_INTAKE.setPower(in);
-        }
-        public void telemetryUpdae(){
-            telemetry.addData("IT", IT.getState());
-            telemetry.addData("BK_DIST", BK_DIST.getDistance(DistanceUnit.INCH));
-            telemetry.addData("BK_DIST", R_DIST.getDistance(DistanceUnit.INCH));
-            telemetry.update();
-        }
+    public void intake_in(float in ){
+        L_INTAKE.setPower(in);
+        R_INTAKE.setPower(in);
     }
+    public void telemetryUpdae(){
+        telemetry.addData("IT", IT.getState());
+        telemetry.addData("BK_DIST", BK_DIST.getDistance(DistanceUnit.INCH));
+        telemetry.addData("BK_DIST", R_DIST.getDistance(DistanceUnit.INCH));
+        telemetry.update();
+    }
+
+    class Motor_power {
+        public float FR,FL,BR,BL = (float) 0.0;
+    }
+}
 

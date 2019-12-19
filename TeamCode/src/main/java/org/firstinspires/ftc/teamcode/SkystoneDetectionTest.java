@@ -40,9 +40,10 @@ public class SkystoneDetectionTest extends LinearOpMode {
     public DcMotor BL_DRIVE = null;
     public DcMotor BR_DRIVE = null;
     public DcMotor FL_DRIVE = null;
+     private Servo SL_PULL = null;
     public DcMotor FR_DRIVE = null;
     private ElapsedTime runtime = new ElapsedTime();
-    private Servo SL_PULL = null;
+
 
     //0 means skystone, 1 means yellow stone
     //-1 for debug, but we can keep it like this because if it works, it should change to either 0 or 255
@@ -76,13 +77,18 @@ public class SkystoneDetectionTest extends LinearOpMode {
         BR_DRIVE = hardwareMap.get(DcMotor.class, "BR_DRIVE");
         FL_DRIVE = hardwareMap.get(DcMotor.class, "FL_DRIVE");
         FR_DRIVE = hardwareMap.get(DcMotor.class, "FR_DRIVE");
-
+        SL_PULL = hardwareMap.get(Servo.class,"SL_PULL");
 
         webcam.openCameraDevice();//open camera
         webcam.setPipeline(new StageSwitchingPipeline());//different stages
         webcam.startStreaming(rows, cols, OpenCvCameraRotation.UPRIGHT);//display on RC
         //width, height
         //width = height in this case, because camera is in portrait mode.
+        telemetry.addData("Values", valLeft + "   " + valMid + "   " + valRight);
+        telemetry.addData("Height", rows);
+        telemetry.addData("Width", cols);
+        telemetry.update();
+        sleep(100);
 
         waitForStart();
         runtime.reset();
@@ -92,7 +98,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
             telemetry.addData("Width", cols);
 
             telemetry.update();
-            sleep(200);
+            sleep(1000);
             //call movement functions
 //            strafe(0.4, 200);
 //            moveDistance(0.4, 700);
@@ -101,59 +107,73 @@ public class SkystoneDetectionTest extends LinearOpMode {
              * vvv Program vvv
              */
 
-            //left
-            if(valLeft == 255 && valMid == 0 && valRight == 0){
+            //RIGHT
+            if(valLeft == 255 && valMid == 255 && valRight == 0){
                 sleep(200);
-                    encoderTurn(5,3,100,"left");
-                encoderDrive(11,3,100,100,"DOWN");
-                encoderDrive(-11,3,100,100,"DOWN");
-                    encoderTurn(12,3,100,"RIGHT");
-                encoderDrive(40,3,100,100,"DOWN");
+                    //encoderTurn(5,1,1000,"left");
+                encoderDrive(11,1,2000,2000,"DOWN");
+                encoderDrive(-11,1,2000,2000,"DOWN");
+                    encoderTurn(12,1,2000,"RIGHT");
+                encoderDrive(40,1,2000,2000,"DOWN");
 
 
 
-                encoderDrive(-40,3,100,100,"UP");
-                    encoderTurn(12,3,100,"LEFT");
-                encoderDrive(11,3,100,100,"DOWN");
-                encoderDrive(-11, 3,100,100,"DOWN");
-                    encoderTurn(12,3,100,"RIGHT");
-                encoderDrive(20,3,100,100,"DOWN");
-                encoderDrive(8,1,100,100,"MIDDLE");
+                encoderDrive(-40,1,2000,2000,"UP");
+                    encoderTurn(12,1,2000,"LEFT");
+                encoderDrive(11,1,2000,2000,"DOWN");
+                encoderDrive(-11, 1,2000,2000,"DOWN");
+                    encoderTurn(12,1,2000,"RIGHT");
+                encoderDrive(20,1,2000,2000,"DOWN");
+                encoderDrive(8,1,2000,2000,"MIDDLE");
 
 
 
 
 
             }
-            //Middle
-            if(valLeft == 0 && valMid == 255 && valRight == 0){
+            //LEFT
+            else if(valLeft == 0 && valMid == 255 && valRight == 255){
                 sleep(200);
-               encoderDrive(11,1,100,100,"DOWN");
-                encoderDrive(-11,1,100,100,"DOWN");
-                    encoderTurn(12,3,100,"RIGHT");
-                encoderDrive(40,6,100,100,"DOWN");
+                encoderDrive(40, .5, 100, 100, "UP");
+
+                sleep(2000);
+                encoderTurn(11.25,1,100,"LEFT");
+               encoderDrive(24,.5,2000,2000,"DOWN");
+                encoderDrive(-20,1,2000,2000,"DOWN");
+                encoderDrive(0,0,100,1000,"UP");
+                    //encoderTurn(12,3,1000,"RIGHT");
+                //encoderDrive(40,6,1000,100,"DOWN");
 
 
-                encoderDrive(-28,6,100,100,"UP");
-                    encoderTurn(12,6,100,"LEFT");
-                encoderDrive(11,4,100,100,"DOWN");
-                encoderDrive(-11,3,100,100,"DOWN");
-                        encoderTurn(12,4,100,"RIGHT");
-                encoderDrive(28,4,100,100,"DOWN");
-                encoderDrive(-8,3,100,100,"MIDDLE");
-
-
+                /*encoderDrive(-28,6,1000,1000,"UP");
+                    encoderTurn(12,6,1000,"LEFT");
+                encoderDrive(11,4,1000,1000,"DOWN");
+                encoderDrive(-11,3,1000,1000,"DOWN");
+                        encoderTurn(12,4,1000,"RIGHT");
+                encoderDrive(28,4,1000,1000,"DOWN");
+                encoderDrive(-8,3,1000,1000,"MIDDLE");
+*/
 
 
             }
-            //right
-            if(valLeft == 0 && valMid == 0 && valRight == 255 ){
-                sleep(200);
-                    encoderTurn(5,3,100,"left");
-                    encoderTurn(12,3,100,"RIGHT");
-                encoderDrive(8,1,100,100,"DOWN");
-                encoderDrive(-11,1,100,100,"DOWN");
-                    encoderTurn(40,1,100,"LEFT");
+            //MIDDLE
+            else if(valLeft == 255 && valMid == 0 && valRight == 255 ){
+                sleep(2000);
+
+                encoderDrive(40, .5, 100, 100, "UP");
+
+                sleep(2000);
+                    encoderTurn(5,1,100,"RIGHT");
+                encoderDrive(24,.5,2000,5000,"DOWN");
+                encoderDrive(-20,1,2000,5000,"DOWN");
+                    encoderTurn(35,.55,1000,"RIGHT");
+                 encoderDrive(40,6,100,5000,"DOWN");
+                 encoderDrive(0,0,100,1000,"UP");
+                 encoderDrive(-84,1,1000,1000,"UP");
+                 encoderTurn(35,.5 ,1000,"RIGHT");
+
+                 ;
+
 
 
             }
@@ -168,9 +188,9 @@ public class SkystoneDetectionTest extends LinearOpMode {
         double DesiredPos = Inches * EncoderTurns / Diameter;
 
         BL_DRIVE.setTargetPosition((int) DesiredPos);
-        BR_DRIVE.setTargetPosition((int) DesiredPos);
+        BR_DRIVE.setTargetPosition((int) -DesiredPos);
         FL_DRIVE.setTargetPosition((int) DesiredPos);
-        FR_DRIVE.setTargetPosition((int) DesiredPos);
+        FR_DRIVE.setTargetPosition((int) -DesiredPos);
 
         BL_DRIVE.setPower(Speed);
         BR_DRIVE.setPower(Speed);
@@ -207,15 +227,15 @@ public class SkystoneDetectionTest extends LinearOpMode {
 
         if (Direction == "RIGHT") {
             BL_DRIVE.setTargetPosition((int) DesiredPos);
-            BR_DRIVE.setTargetPosition((int) -DesiredPos);
+            BR_DRIVE.setTargetPosition((int) DesiredPos);
             FL_DRIVE.setTargetPosition((int) DesiredPos);
-            FR_DRIVE.setTargetPosition((int) -DesiredPos);
+            FR_DRIVE.setTargetPosition((int) DesiredPos);
         }
         else if (Direction == "LEFT") {
             BL_DRIVE.setTargetPosition((int) -DesiredPos);
-            BR_DRIVE.setTargetPosition((int) DesiredPos);
+            BR_DRIVE.setTargetPosition((int) -DesiredPos);
             FL_DRIVE.setTargetPosition((int) -DesiredPos);
-            FR_DRIVE.setTargetPosition((int) DesiredPos);
+            FR_DRIVE.setTargetPosition((int) -DesiredPos);
         }
         else {
             BL_DRIVE.setTargetPosition(0);
