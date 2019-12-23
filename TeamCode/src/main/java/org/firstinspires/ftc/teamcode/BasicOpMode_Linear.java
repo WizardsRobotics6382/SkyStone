@@ -97,11 +97,10 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             Motor_power motorPower = new Motor_power();
 
-            motorPower = drive(gamepad1.left_stick_y, motorPower);
+            motorPower = drive(-gamepad1.left_stick_y, motorPower);
             motorPower = drive_turn(-gamepad1.right_stick_x,gamepad1.right_stick_x, motorPower);
             setMotorPower(motorPower);
-            intake_out(gamepad1.right_trigger);
-            intake_in(-gamepad1.left_trigger);
+            intake(gamepad1.right_bumper,gamepad1.left_bumper);
             servoCalc(gamepad1.y, gamepad1.a);
             Lift(gamepad1.dpad_up, gamepad1.dpad_down);
             telemetryUpdae();
@@ -163,7 +162,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     public Motor_power drive(float Power, Motor_power motorPower) {
         if(Power > .5) {
-            Power = (float) .5;
+            Power = (float) 1;
         }
         if(motorPower == null) {
             motorPower = new Motor_power();
@@ -189,19 +188,24 @@ public class BasicOpMode_Linear extends LinearOpMode {
     }
 
      */
-    public  void  intake_out(float out ){
-        R_INTAKE.setPower(out);
-        L_INTAKE.setPower(out);
-    }
-        /*public void intake( double speed){
-            R_INTAKE.setPower(speed);
-            L_INTAKE.setPower(speed);
-        }
 
-*/
-    public void intake_in(float in ){
-        L_INTAKE.setPower(in);
-        R_INTAKE.setPower(in);
+
+
+
+    public void intake(boolean in,boolean out) {
+        if (in == true) {
+            L_INTAKE.setPower(1);
+            R_INTAKE.setPower(1);
+        }
+        else if ( out == true){
+            L_INTAKE.setPower(-1);
+            R_INTAKE.setPower(-1);
+
+        }
+        else {
+            L_INTAKE.setPower(0);
+            R_INTAKE.setPower(0);
+        }
     }
     public void telemetryUpdae(){
         telemetry.addData("IT", IT.getState());

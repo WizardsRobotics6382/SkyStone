@@ -107,7 +107,10 @@ public class SkystoneDetectionTest extends LinearOpMode {
              * vvv Program vvv
              */
 
-            //RIGHT
+            /**
+             * RIGHT
+             */
+
             if(valLeft == 255 && valMid == 255 && valRight == 0){
                 sleep(200);
                 sleep(200);
@@ -117,19 +120,22 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 encoderTurn(16.25,1,100,"RIGHT");
                 encoderDrive(24,.5,2000,2000,"DOWN");
                 encoderDrive(-20,1,2000,2000,"DOWN");
+
                 killBot();
 
 
 
             }
-            //LEFT
+            /**
+             *Left
+             */
             else if(valLeft == 0 && valMid == 255 && valRight == 255){
                 sleep(200);
                 encoderDrive(40, .5, 100, 100, "UP");
 
                 sleep(2000);
                 encoderTurn(11.25,1,100,"LEFT");
-               encoderDrive(24,.5,2000,2000,"DOWN");
+                encoderDrive(24,.5,2000,2000,"DOWN");
                 encoderDrive(-20,1,2000,2000,"DOWN");
                 encoderDrive(0,0,100,1000,"UP");
                 killBot();
@@ -148,7 +154,9 @@ public class SkystoneDetectionTest extends LinearOpMode {
 
 
             }
-            //MIDDLE
+            /**
+            MIDDLE
+             */
             else if(valLeft == 255 && valMid == 0 && valRight == 255 ){
                 sleep(2000);
 
