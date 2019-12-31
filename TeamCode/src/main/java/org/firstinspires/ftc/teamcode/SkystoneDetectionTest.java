@@ -139,7 +139,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 encoderDrive(-20,1,2000,2000,"DOWN");
                 encoderDrive(0,0,100,1000,"UP");
                 killBot();
-                    //encoderTurn(12,3,1000,"RIGHT");
+                    //encoderTurn(12,3,1000,"RIGHT"); 
                 //encoderDrive(40,6,1000,100,"DOWN");
 
 

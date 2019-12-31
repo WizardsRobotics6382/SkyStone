@@ -100,7 +100,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             motorPower = drive(-gamepad1.left_stick_y, motorPower);
             motorPower = drive_turn(-gamepad1.right_stick_x,gamepad1.right_stick_x, motorPower);
             setMotorPower(motorPower);
-            intake(gamepad1.right_bumper,gamepad1.left_bumper);
+            intake(gamepad1.right_bumper,gamepad1.left_bumper,IT.getState());
             servoCalc(gamepad1.y, gamepad1.a);
             Lift(gamepad1.dpad_up, gamepad1.dpad_down);
             telemetryUpdae();
@@ -124,7 +124,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             LL.setPower(1);
 
         } else if (down == true) {
-            LL.setPower(-.5);
+            LL.setPower(-1);
 
         } else {
             LL.setPower(0);
@@ -192,12 +192,12 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
 
 
-    public void intake(boolean in,boolean out) {
-        if (in == true) {
+    public void intake(boolean IN,boolean OUT, boolean IT) {
+        if ( IN == true && IT == true) {
             L_INTAKE.setPower(1);
             R_INTAKE.setPower(1);
         }
-        else if ( out == true){
+        else if ( OUT == true && IT == true){
             L_INTAKE.setPower(-1);
             R_INTAKE.setPower(-1);
 
