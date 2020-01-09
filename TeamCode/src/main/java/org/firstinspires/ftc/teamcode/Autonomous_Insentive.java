@@ -34,6 +34,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -68,6 +69,10 @@ public class Autonomous_Insentive extends LinearOpMode {
     private DcMotor R_INTAKE = null;
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
+    public   DcMotor A = null;
+
+
+
 
     public int Count = 0;
     public int Skystone = 0;
@@ -84,7 +89,7 @@ public class Autonomous_Insentive extends LinearOpMode {
         FR_DRIVE = hardwareMap.get(DcMotor.class, "FR_DRIVE");
         R_INTAKE = hardwareMap.get(DcMotor.class, "RI");
         L_INTAKE = hardwareMap.get(DcMotor.class, "LI");
-        IT = hardwareMap.get(DigitalChannel.class, "IT");
+
 
         IT.setMode(DigitalChannel.Mode.INPUT);
         R_INTAKE.setDirection(DcMotor.Direction.FORWARD);
@@ -93,7 +98,7 @@ public class Autonomous_Insentive extends LinearOpMode {
         BR_DRIVE.setDirection(DcMotor.Direction.REVERSE);
         FL_DRIVE.setDirection(DcMotor.Direction.FORWARD);
         FR_DRIVE.setDirection(DcMotor.Direction.REVERSE);
-
+        A .setDirection(DcMotorSimple.Direction.REVERSE);
         Initialize();
         waitForStart();
 
@@ -405,21 +410,26 @@ public class Autonomous_Insentive extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-        public void servoPos(String position, int SleepTime){
+        public void servoPos(String position, int SleepTime) {
 
             sleep(SleepTime);
 
             if (position == "UP"){
-                SL_PULL.setPosition(180);
+               A .setPower(.1);
+               sleep(300);
             }
             else if (position == "DOWN"){
-                SL_PULL.setPosition(0);
+               A.setPower(-1);
+                sleep(300);
             }
             else if (position == "MIDDLE"){
-                SL_PULL.setPosition(90);
+                A.setPower(.1);
+                sleep(100);
             }
             else {
-                SL_PULL.setPosition(0);
+                A .setPower(0);
+
+
             }
         }
         public void intake(double speed){

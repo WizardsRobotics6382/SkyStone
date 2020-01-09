@@ -69,6 +69,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor L_INTAKE = null;
     private DigitalChannel IT = null;
     private DcMotor LL = null;
+    private DcMotor A = null ;
+
 
     public void runOpMode() {
 
@@ -83,6 +85,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         L_INTAKE = hardwareMap.get(DcMotor.class, "LI");
         IT = hardwareMap.get(DigitalChannel.class, "IT");
         LL = hardwareMap.get(DcMotor.class, "LL");
+        A  = hardwareMap.get(DcMotor.class,"A");
 
         IT.setMode(DigitalChannel.Mode.INPUT);
         R_INTAKE.setDirection(DcMotor.Direction.FORWARD);
@@ -134,11 +137,16 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     public void servoPos(String position) {
         if (position == "UP") {
-            SL_PULL.setPosition(0);
+            A .setPower(.25);
+            sleep(2000);
+            A .setPower(0);
         } else if (position == "DOWN") {
-            SL_PULL.setPosition(180);
+
+            A .setPower(-.3);
+            sleep(800);
+            A.setPower(0);
         } else {
-            SL_PULL.setPosition(0);
+            A.setTargetPosition(1000);
         }
     }
 
@@ -193,13 +201,15 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
 
     public void intake(boolean IN,boolean OUT, boolean IT) {
-        if ( IN == true && IT == true) {
+        if ( IN == true ) {
             L_INTAKE.setPower(1);
             R_INTAKE.setPower(1);
         }
         else if ( OUT == true && IT == true){
             L_INTAKE.setPower(-1);
             R_INTAKE.setPower(-1);
+
+
 
         }
         else {
