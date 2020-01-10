@@ -117,32 +117,23 @@ public class SkystoneDetectionTest extends LinearOpMode {
 
             if(valLeft == 255 && valMid == 255 && valRight == 0){
                 sleep(200);
-                sleep(200);
                 encoderDrive(40, .5, 100, 100);
+                sleep(200);
                 encoderTurn(16.25,1,100,"RIGHT");
                 encoderDrive(24,.5,2000,2000);
-                A .setPower(-1);
+                A .setPower(-.35);
                 sleep(1000);
                 A .setPower(0);
                 encoderDrive(-20,1,2000,2000);
-                encoderTurn(12,3,1000,"RIGHT");
-                encoderDrive(40,6,1000,1000);
-                A .setPower(1);
+                encoderTurn(18,3,1000,"RIGHT");
+                encoderDrive(38,6,1000,1000);
+                A .setPower(.35);
                 sleep(1000);
                 A .setPower(0);
+                encoderDrive(-10,3,1000,1000);
 
 
 
-                encoderDrive(-68,6,4000,5000);
-                encoderTurn(12,6,1000,"LEFT");
-                encoderDrive(11,4,1000,1000);
-                A .setPower(-.25);
-                sleep(1000);
-                A .setPower(0);
-                encoderDrive(-11,3,1000,1000);
-                encoderTurn(12,4,1000,"RIGHT");
-                encoderDrive(60,4,1000,1000);
-                encoderDrive(-8,3,1000,1000);
 
 
                 killBot();
@@ -160,7 +151,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 sleep(2000);
                 encoderTurn(11.25,1,100,"LEFT");
                 encoderDrive(24,.5,2000,1000);
-                A .setPower(-.25);
+                A .setPower(-.35);
                 sleep(1000);
                 A .setPower(0);
                 encoderDrive(-20,1,2000,2000);
@@ -168,22 +159,13 @@ public class SkystoneDetectionTest extends LinearOpMode {
 
                     encoderTurn(18,3,2000,"RIGHT");
                 encoderDrive(40,6,2000,1000);
-                A .setPower(.25);
+                A .setPower(.35);
                 sleep(2000);
                 A .setPower(0);
 
 
-                encoderDrive(-60,6,5000,1000);
-                    encoderTurn(14,6,1000,"LEFT");
-                encoderDrive(11,4,1000,1000);
-                A .setPower(-.25);
-                sleep(1000);
-                A .setPower(0);
-                encoderDrive(-11,3,1000,1000);
-                        encoderTurn(18,4,1000,"RIGHT");
-                encoderDrive(58,4,1000,1000);
-                encoderDrive(-10,3,1000,1000);
-
+                encoderDrive(-1,6,5000,1000);
+                killBot();
 
 
             }
