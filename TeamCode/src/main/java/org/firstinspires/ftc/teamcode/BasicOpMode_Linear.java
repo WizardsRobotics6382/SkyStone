@@ -70,6 +70,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DigitalChannel IT = null;
     private DcMotor LL = null;
     private DcMotor A = null ;
+    private DcMotor E = null ;
+
 
 
     public void runOpMode() {
@@ -105,7 +107,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             setMotorPower(motorPower);
             intake(gamepad1.right_bumper,gamepad1.left_bumper,IT.getState());
             servoCalc(gamepad1.y, gamepad1.a);
-            Lift(gamepad1.dpad_up, gamepad1.dpad_down);
+            Lift(gamepad1.dpad_up, gamepad2.dpad_down);
             telemetryUpdae();
 
 
@@ -131,6 +133,21 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         } else {
             LL.setPower(0);
+
+        }
+    }
+    public void extenchion (boolean out , boolean in) {
+        if (out == true){
+            E.setPower(-1);
+
+        }
+        else if (in == true && out == false){
+            E.setPower(1);
+
+        }
+        else{
+            E.setPower(0);
+
 
         }
     }

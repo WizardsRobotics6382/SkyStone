@@ -52,14 +52,12 @@ public class DistanceSenseTest extends LinearOpMode {
 
         if (opModeIsActive()){
 
-        distanceDriveForward(5,5);
+        //distanceDriveForward(5,5);
 
         }
     }
 
-    public void drive(double leftPower, double rightPower){
-        BL_DRIVE.setPower(leftPower);
-        BR_DRIVE.setPower(rightPower);
+    /*public void drive(double leftPower, double rightPower);BR_DRIVE.setPower(rightPower);
         FL_DRIVE.setPower(leftPower);
         FR_DRIVE.setPower(rightPower);
     }
@@ -73,6 +71,6 @@ public class DistanceSenseTest extends LinearOpMode {
             if(R_DIST.getDistance(DistanceUnit.INCH) < targetDist){
                 drive(0.7,0.9);
             }
-        }
-    }
-}
+       */ }
+
+

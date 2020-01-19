@@ -72,7 +72,8 @@ public class SkystoneDetectionTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier
+                ("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = new OpenCvWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         BL_DRIVE = hardwareMap.get(DcMotor.class, "BL_DRIVE");
@@ -123,7 +124,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 encoderDrive(24,.5,2000,2000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.05);
                 encoderDrive(-20,1,2000,2000);
                 encoderTurn(18,3,1000,"RIGHT");
                 encoderDrive(38,6,1000,1000);
@@ -153,9 +154,9 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 encoderDrive(24,.5,2000,1000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.-1);
                 encoderDrive(-20,1,2000,2000);
-
+                A.setPower(0);
 
                     encoderTurn(18,3,2000,"RIGHT");
                 encoderDrive(40,6,2000,1000);
@@ -164,7 +165,7 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 A .setPower(0);
 
 
-                encoderDrive(-1,6,5000,1000);
+                encoderDrive(-16,6,5000,1000);
                 killBot();
 
 
@@ -182,9 +183,10 @@ public class SkystoneDetectionTest extends LinearOpMode {
                 encoderDrive(24,.5,2000,4000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.-2);
                 encoderDrive(-20,1,2000,5000);
                     encoderTurn(18,3,1000,"RIGHT");
+                A .setPower(0);
                  encoderDrive(40,6,100,4000);
                 A .setPower(.3);
                 sleep(2000);

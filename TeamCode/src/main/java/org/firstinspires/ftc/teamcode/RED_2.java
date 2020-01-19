@@ -119,14 +119,15 @@ public class RED_2 extends LinearOpMode {
                 sleep(200);
                 encoderDrive(40, .5, 100, 100);
                 sleep(200);
-                encoderTurn(16.25,1,100,"LEFT");
+                encoderTurn(16.25,1,100,"RIGHT");
                 encoderDrive(24,.5,2000,2000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.-2);
                 encoderDrive(-20,1,2000,2000);
+                A.setPower(0);
                 encoderTurn(18,3,1000,"LEFT");
-                encoderDrive(38,6,1000,1000);
+                encoderDrive(40,6,1000,1000);
                 A .setPower(.35);
                 sleep(1000);
                 A .setPower(0);
@@ -146,17 +147,16 @@ public class RED_2 extends LinearOpMode {
              */
             else if(valLeft == 0 && valMid == 255 && valRight == 255){
                 sleep(200);
-                encoderDrive(40, .5, 100, 100);
+                encoderDrive(40, .5, 1000, 100);
 
                 sleep(2000);
-                encoderTurn(11.25,1,100,"RIGHT");
+                encoderTurn(11.25,1,100,"LEFT");
                 encoderDrive(24,.5,2000,1000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.-2);
                 encoderDrive(-20,1,2000,2000);
-
-
+                A .setPower(0);
                 encoderTurn(18,3,2000,"LEFT");
                 encoderDrive(40,6,2000,1000);
                 A .setPower(.35);
@@ -182,10 +182,11 @@ public class RED_2 extends LinearOpMode {
                 encoderDrive(24,.5,2000,4000);
                 A .setPower(-.35);
                 sleep(1000);
-                A .setPower(0);
+                A .setPower(0.-2);
                 encoderDrive(-20,1,2000,5000);
+                A.setPower(0);
                 encoderTurn(18,3,1000,"LEFT");
-                encoderDrive(40,6,100,4000);
+                encoderDrive(45,6,100,4000);
                 A .setPower(.3);
                 sleep(2000);
                 A .setPower(0);
