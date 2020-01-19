@@ -71,6 +71,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor LL = null;
     private DcMotor A = null ;
     private DcMotor E = null ;
+    private Servo Claw = null ;
+
 
 
 
@@ -87,7 +89,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
         L_INTAKE = hardwareMap.get(DcMotor.class, "LI");
         IT = hardwareMap.get(DigitalChannel.class, "IT");
         LL = hardwareMap.get(DcMotor.class, "LL");
-        A  = hardwareMap.get(DcMotor.class,"A");
+        //A  = hardwareMap.get(DcMotor.class,"A");//
+        E = hardwareMap.get(DcMotor.class,"E");
+        Claw = hardwareMap.get(Servo.class,"C");
 
         IT.setMode(DigitalChannel.Mode.INPUT);
         R_INTAKE.setDirection(DcMotor.Direction.FORWARD);
@@ -107,12 +111,23 @@ public class BasicOpMode_Linear extends LinearOpMode {
             setMotorPower(motorPower);
             intake(gamepad1.right_bumper,gamepad1.left_bumper,IT.getState());
             servoCalc(gamepad1.y, gamepad1.a);
+            servocalc2(gamepad2.b,gamepad2.x);
             Lift(gamepad1.dpad_up, gamepad2.dpad_down);
+            Extension(gamepad2.left_bumper,gamepad2.right_bumper);
             telemetryUpdae();
 
 
                 }
         }
+        public void servocalc2 (boolean grab, boolean drop ){
+        if (grab){
+            servoPos2("grab");
+        }
+        else if (drop){
+            servoPos2("drop");
+            }
+        }
+
 
 
     public void servoCalc(boolean UP, boolean DOWN) {
@@ -136,7 +151,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         }
     }
-    public void extenchion (boolean out , boolean in) {
+    public void Extension  (boolean out , boolean in) {
         if (out == true){
             E.setPower(-1);
 
@@ -151,21 +166,33 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         }
     }
+    public void servoPos2(String position){
+    if (position == "grab"){
+        Claw.setPosition(30);
+    }
+        else if (position == "drop"){
+            Claw.setPosition(0);
+
+
+    }
+    }
+
 
     public void servoPos(String position) {
         if (position == "UP") {
-            A .setPower(.25);
-            sleep(2000);
-            A .setPower(0);
+            SL_PULL.setPosition(0);
+           // A .setPower(.25);
+           // sleep(2000);
+            //A .setPower(0);
         } else if (position == "DOWN") {
+            SL_PULL.setPosition(180);
 
-            A .setPower(-.3);
-            sleep(800);
-            A.setPower(0);
-        } else {
-            A.setTargetPosition(1000);
+           // A .setPower(-.3);
+            //sleep(800);
+            //A.setPower(0);
+        };
         }
-    }
+
 
     public Motor_power drive_turn(float right ,float left, Motor_power motorPower ){
         if(right > .5) {
